@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-flow-diagrams"
+version = "1.0.0"
+description = "LLM-powered diagram generation (architecture, decision tree, data flow, process flow)"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "Flask>=3.0.0",
+    "Flask-CORS>=4.0.0",
+    "Flasgger>=0.9.7",
+    "openai>=1.0.0",
+    "python-dotenv>=1.0.0",
+]
+
+[tool.setuptools.packages.find]
+include = ["app*", "ai_flow*"]
