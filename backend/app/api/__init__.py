@@ -13,6 +13,7 @@ def register_blueprints(app):
     from app.api.upload_routes import upload_bp
     from app.api.process_routes import process_bp
     from app.api.document_embed_routes import document_embed_bp
+    from app.api.image_routes import image_bp
 
     app.register_blueprint(diagram_bp)
     app.register_blueprint(diagram_v1_bp)
@@ -20,3 +21,4 @@ def register_blueprints(app):
     app.register_blueprint(upload_bp)
     app.register_blueprint(process_bp)
     app.register_blueprint(document_embed_bp)
+    app.register_blueprint(image_bp)
