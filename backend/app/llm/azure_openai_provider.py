@@ -54,6 +54,7 @@ class AzureOpenAIProvider(LLMProvider):
                     temperature=0.3,
                     max_completion_tokens=2048,
                     response_format={"type": "json_object"},
+                    timeout=120,
                 )
 
                 # Track token usage and cost

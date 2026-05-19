@@ -4,21 +4,20 @@
  * Handles communication with the diagram generation endpoint.
  */
 
-import { postJSON } from './client';
+import { postJSON, getJSON } from './client';
 
 // Request deduplication: track pending requests to prevent duplicates
 const _pendingRequests = new Map();
 
 /**
  * Generate a diagram from a description.
- * @param {string} description - Natural language description
- * @param {string} diagramType - Diagram type (decision_tree, system_architecture, data_flow, process_flow)
+ * @param {string} description
+ * @param {string} diagramType - 'decision_tree' or 'system_architecture'
  * @returns {Promise<object>} { nodes, edges }
  */
 export async function generateDiagram(description, diagramType = 'decision_tree') {
   const requestKey = `generate_${diagramType}_${description}`;
 
-  // Deduplication: return existing promise if identical request is in-flight
   if (_pendingRequests.has(requestKey)) {
     console.warn('Duplicate request detected, returning pending request');
     return _pendingRequests.get(requestKey);
@@ -34,6 +33,14 @@ export async function generateDiagram(description, diagramType = 'decision_tree'
 
   _pendingRequests.set(requestKey, requestPromise);
   return requestPromise;
+}
+
+/**
+ * Fetch the most recently generated diagram from the backend.
+ * @returns {Promise<object>} { nodes, edges, diagram_type }
+ */
+export async function getCurrentDiagram() {
+  return await getJSON('/api/diagram/current');
 }
 
 // Keep backward-compatible alias

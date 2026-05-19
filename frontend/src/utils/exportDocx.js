@@ -21,7 +21,8 @@ const DIAGRAM_TYPE_TITLES = {
  * @param {string}   filename     - Output filename.
  * @param {string}   diagramType  - Type of diagram for the report title.
  */
-export async function exportAsDocx(description, treeData, imageBase64, filename = 'diagram.docx', diagramType = 'decision_tree') {
+export async function exportAsDocx(description, treeData, imageBase64, filename = 'diagram.docx', diagramType = 'decision_tree', customTitle = null) {
+  const resolvedTitle = customTitle || DIAGRAM_TYPE_TITLES[diagramType] || 'Diagram Report';
   // Strip the data-url prefix to get raw base64
   const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '');
   const imageBuffer = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0));
@@ -54,7 +55,7 @@ export async function exportAsDocx(description, treeData, imageBase64, filename 
             spacing: { after: 200 },
             children: [
               new TextRun({
-                text: DIAGRAM_TYPE_TITLES[diagramType] || 'Diagram Report',
+                text: resolvedTitle,
                 bold: true,
                 size: 36,
                 font: 'Calibri',
