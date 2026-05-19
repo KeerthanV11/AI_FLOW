@@ -36,6 +36,17 @@ export async function generateDiagram(description, diagramType = 'decision_tree'
 }
 
 /**
+ * Upload the finalized diagram image (base64 data-URL) to the backend.
+ * The backend stores it in generated_images/.
+ * @param {string} dataUrl - base64 PNG data-URL
+ * @param {string} diagramType
+ * @returns {Promise<{status: string, filename: string, path: string}>}
+ */
+export async function saveImage(dataUrl, diagramType = 'diagram') {
+  return postJSON('/api/image/save', { image: dataUrl, diagram_type: diagramType });
+}
+
+/**
  * Fetch the most recently generated diagram from the backend.
  * @returns {Promise<object>} { nodes, edges, diagram_type }
  */

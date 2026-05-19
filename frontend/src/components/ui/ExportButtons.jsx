@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { toPng } from 'html-to-image';
 import { exportAsPng, exportAsSvg } from '../../utils/exportImage';
 import { exportAsDocx } from '../../utils/exportDocx';
+import { saveImage } from '../../api/diagramApi';
 
 export default function ExportButtons({ flowRef, description, treeData, finalizedImage, onFinalize, diagramType = 'decision_tree' }) {
   const [finalizing, setFinalizing] = useState(false);
@@ -45,6 +46,12 @@ export default function ExportButtons({ flowRef, description, treeData, finalize
           height: element.offsetHeight,
           backgroundColor: '#ffffff',
         });
+
+        // Persist image to backend generated_images/ (fire-and-forget, don't block navigation)
+        saveImage(dataUrl, diagramType).catch(err =>
+          console.warn('Image save to backend failed (non-blocking):', err)
+        );
+
         onFinalize(dataUrl);
       } finally {
         // Restore everything
